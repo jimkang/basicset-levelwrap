@@ -1,9 +1,7 @@
-var assert = require('assert');
-// var _ = require('underscore');
-// var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var uid = require('./uid').uid;
-//createLevelWrap('test.db');
+// These tests need to be run with the "--ui tdd" switch.
 
+var assert = require('assert');
+var uid = require('./uid').uid;
 
 /* Utils */
 
@@ -22,19 +20,28 @@ utils.optionsAreValid = function optionsAreValid(options, expectedTypes) {
 
 /* Settings */
 
+var docAId = uid(4);
+var docBId = uid(4);
+
 var settings = {
   redShyguyObject: {
+    id: uid(8),
     name: 'Red Shyguy',
+    doc: docAId,
     hp: 1,
     shouldTurnAwayFromCliffs: false
   },
   pinkShyguyObject: {
+    id: uid(8),
     name: 'Pink Shyguy',
+    doc: docBId,
     hp: 1,
     shouldTurnAwayFromCliffs: true
   },
   birdoObject: {
+    id: uid(8),
     name: 'Birdo',
+    doc: docBId,
     hp: 3,
     shouldTurnAwayFromCliffs: true,
     treasures: [
@@ -46,11 +53,11 @@ var settings = {
   },
 
   docA: {
-    id: uid(4),
+    id: docAId,
     name: 'Document A'
   },
   docB: {
-    id: uid(4),
+    id: docBId,
     name: 'Document B'
   }  
 };
@@ -141,4 +148,40 @@ suite('Document', function documentSuite() {
 
 });
 
+suite('Object', function documentObject() {
+
+  test('should fail to get Red Shyguy object', 
+    function attemptToGetRedShyguy(testDone) {
+      session.levelwrap.getObject(settings.redShyguyObject.id, 
+        settings.docA.id, 
+        function done(error, obj) {
+          assert.equal(error.name, 'NotFoundError');
+          assert.ok(!obj);
+          testDone();
+        }
+      );
+    }
+  );
+
+  test('should create Red Shyguy object', function createShyguy(testDone) {
+    session.levelwrap.saveObject(settings.redShyguyObject, 
+      function done(error, obj) {
+        assert.ok(!error, 'Creating the Red Shyguy object failed.');
+        testDone();
+      }
+    );
+  });
+
+  test('should get Red Shyguy object', function getRedShyguy(testDone) {
+    session.levelwrap.getObject(settings.redShyguyObject.id, 
+      settings.docA.id, 
+      function done(error, obj) {
+        assert.ok(!error, error);
+        assert.deepEqual(obj, settings.redShyguyObject);
+        testDone();
+      }
+    );
+  });
+  
+});
 
