@@ -1,0 +1,20 @@
+{
+  "name": "basicset-levelwrap",
+  "version": "0.1.0",
+  "description": "A very basic leveldb wrapper for storing objects that belong to 'documents'.",
+  "main": "basicset-levelwrap.js",
+  "scripts": {
+    "test": "mocha --ui tdd -R spec tests/levelwraptests.js"
+  },
+  "repository": "",
+  "keywords": [
+    "basic",
+    "leveldb",
+    "keyvalue"
+  ],
+  "author": "Jim Kang",
+  "license": "MIT",
+  "dependencies": {
+    "level": "~0.17.0-1"
+  }
+}
