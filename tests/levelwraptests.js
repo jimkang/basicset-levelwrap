@@ -97,6 +97,14 @@ suite('Document', function documentSuite() {
     });
   });
 
+  test('should fail to get Document B', function getDocB(testDone) {
+    session.levelwrap.getDoc(settings.docB.id, function done(error, doc) {
+      assert.equal(error.name, 'NotFoundError');
+      assert.ok(!doc);
+      testDone();
+    });
+  });
+
   // test('should save an object', function saveObject1() {
 
   // });
