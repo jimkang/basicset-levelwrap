@@ -122,8 +122,23 @@ suite('Document', function documentSuite() {
     });
   });
 
-  // test('should save an object', function saveObject1() {
+  test('should update Document A', function updateDocA(testDone) {
+    settings.docA.name = 'Document A updated.';
+    session.levelwrap.saveDoc(settings.docA, function done(error) {
+      assert.ok(!error, 'Creating the document failed.');
 
-  // });
+      // Get the document again to check it.
+      session.levelwrap.getDoc(settings.docA.id, function done(error, doc) {
+        assert.ok(!error, error);
+        console.log(settings.docA);
+        assert.deepEqual(settings.docA, doc, 
+          'The doc gotten does not match Document A.'
+        );
+        testDone();
+      });
+    });
+  });
+
 });
+
 
