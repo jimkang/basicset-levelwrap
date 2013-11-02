@@ -137,7 +137,7 @@ suite('Document', function documentSuite() {
       // Get the document again to check it.
       session.levelwrap.getDoc(settings.docA.id, function done(error, doc) {
         assert.ok(!error, error);
-        console.log(settings.docA);
+        console.log(doc);
         assert.deepEqual(settings.docA, doc, 
           'The doc gotten does not match Document A.'
         );
@@ -226,6 +226,27 @@ suite('Object (non-destructive)', function documentObject() {
         assert.ok(!error, error);
         assert.deepEqual(obj, settings.pinkShyguyObject);
         testDone();
+      }
+    );
+  });
+
+  test('should update Pink Shyguy object', function updatePinkShyguy(testDone) {
+    settings.pinkShyguyObject.hp = 2;
+    session.levelwrap.saveObject(settings.pinkShyguyObject, 
+      function done(error) {
+        assert.ok(!error, error);
+
+      // Get the object again to check it.
+      session.levelwrap.getObject(settings.pinkShyguyObject.id, 
+        settings.docB.id, 
+        function done(error, obj) {
+          assert.ok(!error, error);
+          console.log(obj);
+          assert.deepEqual(settings.pinkShyguyObject, obj, 
+            'The object gotten does not match the Pink Shyguy object.'
+          );
+          testDone();
+        });
       }
     );
   });
