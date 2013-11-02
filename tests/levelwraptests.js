@@ -97,10 +97,27 @@ suite('Document', function documentSuite() {
     });
   });
 
-  test('should fail to get Document B', function getDocB(testDone) {
+  test('should fail to get Document B', function attemptToGetDocB(testDone) {
     session.levelwrap.getDoc(settings.docB.id, function done(error, doc) {
       assert.equal(error.name, 'NotFoundError');
       assert.ok(!doc);
+      testDone();
+    });
+  });
+
+  test('should create Document B', function createDocB(testDone) {
+    session.levelwrap.saveDoc(settings.docB, function done(error) {
+      assert.ok(!error, 'Creating the document failed.');
+      testDone();
+    });
+  });
+
+  test('should get Document B', function getDocB(testDone) {
+    session.levelwrap.getDoc(settings.docB.id, function done(error, doc) {
+      assert.ok(!error, error);
+      assert.deepEqual(settings.docB, doc, 
+        'The doc gotten does not match Document B.'
+      );
       testDone();
     });
   });
