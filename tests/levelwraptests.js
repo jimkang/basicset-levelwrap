@@ -148,7 +148,7 @@ suite('Document', function documentSuite() {
 
 });
 
-suite('Object', function documentObject() {
+suite('Object (non-destructive)', function documentObject() {
 
   test('should fail to get Red Shyguy object', 
     function attemptToGetRedShyguy(testDone) {
@@ -182,6 +182,53 @@ suite('Object', function documentObject() {
       }
     );
   });
-  
+
+  test('should fail to get Red Shyguy object in document B', 
+    function attemptToGetRedShyguy(testDone) {
+      session.levelwrap.getObject(settings.redShyguyObject.id, 
+        settings.docB.id, 
+        function done(error, obj) {
+          assert.equal(error.name, 'NotFoundError');
+          assert.ok(!obj);
+          testDone();
+        }
+      );
+    }
+  );
+
+  test('should create Pink Shyguy object in document B', 
+    function createPinkShyguy(testDone) {
+      session.levelwrap.saveObject(settings.pinkShyguyObject, 
+        function done(error, obj) {
+          assert.ok(!error, 'Creating the Pink Shyguy object failed.');
+          testDone();
+        }
+      );
+    }
+  );
+
+  test('should fail to get Pink Shyguy object in document A', 
+    function attemptToGetPinkShyguy(testDone) {
+      session.levelwrap.getObject(settings.pinkShyguyObject.id, 
+        settings.docA.id, 
+        function done(error, obj) {
+          assert.equal(error.name, 'NotFoundError');
+          assert.ok(!obj);
+          testDone();
+        }
+      );
+    }
+  );
+
+  test('should get Pink Shyguy object', function getPinkShyguy(testDone) {
+    session.levelwrap.getObject(settings.pinkShyguyObject.id, settings.docB.id, 
+      function done(error, obj) {
+        assert.ok(!error, error);
+        assert.deepEqual(obj, settings.pinkShyguyObject);
+        testDone();
+      }
+    );
+  });
+
 });
 
