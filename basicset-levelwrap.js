@@ -11,20 +11,7 @@ function createLevelWrap(leveldbFilePath) {
   // If there is another error, the done callback will be passed null.
   levelwrap.getObject = function getObject(id, docId, done) {
     var key = this.getObjectKey(id, docId);
-
-    this.db.get(key, function getDone(error, value) {
-      if (error) {
-        if (error.name === 'NotFoundError') {
-          done(error, []);
-        }
-        else {
-          done(error, null);
-        }
-      }
-      else {
-        done(null, value);
-      }
-    });
+    this.db.get(key, done);
   };
 
   // doc (an id) is assumed to be one of the object properties.
@@ -45,20 +32,7 @@ function createLevelWrap(leveldbFilePath) {
 
   levelwrap.getDoc = function getDoc(id, done) {
     var key = this.getDocKey(id);
-
-    this.db.get(key, function getDone(error, value) {
-      if (error) {
-        if (error.name === 'NotFoundError') {
-          done(error, []);
-        }
-        else {
-          done(error, null);
-        }
-      }
-      else {
-        done(null, value);
-      }
-    });
+    this.db.get(key, done);
   };
 
   levelwrap.sanitizeKeySegment = function sanitizeKeySegment(key) {
