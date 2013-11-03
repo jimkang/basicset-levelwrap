@@ -52,7 +52,7 @@ function createLevelWrap(leveldbFilePath) {
     return key;
   };
 
-  this.getDocIdFromKey = function getDocIdFromKey(key) {
+  levelwrap.getDocIdFromKey = function getDocIdFromKey(key) {
     var parts = key.split(this.nsDelimiter);
     var id = null;
     if (parts.length > 1) {
@@ -61,12 +61,20 @@ function createLevelWrap(leveldbFilePath) {
     return id;
   };
 
-  this.getRangeForObjectsInDoc = function getRangeForObjectsInDoc(docId) {
+  levelwrap.getRangeForObjectsInDoc = function getRangeForObjectsInDoc(docId) {
     var cleanDocId = this.sanitizeKeySegment(docId);
     return [
       's' + this.nsDelimiter + cleanDocId + this.nsDelimiter,
       's' + this.nsDelimiter + cleanDocId + this.nsEndRangeDelimiter
     ];
+  };
+
+  levelwrap.getDocObjectStream = function getDocObjectStream(docId) {
+    var range = this.getRangeForObjectsInDoc(docId);
+    return this.db.createValueStream({
+      start: range[0],
+      end: range[1]
+    });
   };
 
   return levelwrap;
