@@ -20,8 +20,8 @@ function createLevelWrap(leveldbFilePath) {
     this.db.put(key, obj, done);
   };
 
-  levelwrap.deleteObject = function deleteObject(obj, done) {
-    var key = this.getObjectKey(obj.id, obj.doc);
+  levelwrap.deleteObject = function deleteObject(id, docId, done) {
+    var key = this.getObjectKey(id, docId);
     this.db.del(key, {}, done);
   };
 
