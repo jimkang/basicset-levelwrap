@@ -76,7 +76,6 @@ var session = {
 suite('Instantiation', function instantiationSuite() {
 
   test('should create the module', function instantiateModule() {
-    debugger;
     session.levelwrap = require('../basicset-levelwrap').createLevelWrap(
       'test.db'
     );
@@ -250,6 +249,48 @@ suite('Object (non-destructive)', function documentObject() {
       }
     );
   });
+
+
+  test('should create Birdo object in document B', 
+    function createBirdo(testDone) {
+      session.levelwrap.saveObject(settings.birdoObject, 
+        function done(error, obj) {
+          assert.ok(!error, 'Creating the Birdo object failed.');
+          testDone();
+        }
+      );
+    }
+  );
+
+  test('should be able to get Pink Shyguy and Birdo from document B stream', 
+    function streamDocB(testDone) {
+      var objStream = session.levelwrap.getDocObjectStream(settings.docB.id);
+      var objCount = 0;
+
+      objStream.on('data', function readData(obj) {
+        if (obj.id === settings.pinkShyguyObject.id) {
+          assert.deepEqual(obj, settings.pinkShyguyObject, 
+            'The Pink Shyguy object does not match the one in settings.');
+          ++objCount;
+        }
+        else if (obj.id === settings.birdoObject.id) {
+          assert.deepEqual(obj, settings.birdoObject,
+            'The Birdo object does not match the one in settings.');
+          ++objCount;
+        }
+        else {
+          assert.ok(false, 'An unexpected object was retrieved.');
+          testDone();
+        }
+      });
+
+      objStream.on('end', function end() {
+        assert.equal(objCount, 2, 
+          'Did not get as many objects from the Document B stream as expected.');
+        testDone();
+      });
+    }
+  );
 
 });
 
