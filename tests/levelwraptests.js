@@ -147,7 +147,7 @@ suite('Document', function documentSuite() {
 
 });
 
-suite('Object (non-destructive)', function documentObject() {
+suite('Object (non-destructive)', function objectSuite() {
 
   test('should fail to get Red Shyguy object', 
     function attemptToGetRedShyguy(testDone) {
@@ -294,3 +294,27 @@ suite('Object (non-destructive)', function documentObject() {
 
 });
 
+suite('Object (destructive)', function destructiveObjectSuite() {
+
+  test('should delete Red Shyguy object', function deleteRedShyguy(testDone) {
+    session.levelwrap.deleteObject(settings.redShyguyObject.id, 
+      settings.redShyguyObject.doc,
+      function done(error) {
+        assert.ok(!error, error);
+
+        // Get the object again to check it.
+        session.levelwrap.getObject(settings.redShyguyObject.id, 
+          settings.redShyguyObject.doc, 
+          function done(error, obj) {
+            assert.equal(error.name, 'NotFoundError');
+            assert.ok(!obj);
+            testDone();
+          }
+        );
+      }
+    );
+  });
+
+});
+
+// TODO: Delete doc.
