@@ -295,7 +295,6 @@ suite('Object (non-destructive)', function objectSuite() {
 });
 
 suite('Object (destructive)', function destructiveObjectSuite() {
-
   test('should delete Red Shyguy object', function deleteRedShyguy(testDone) {
     session.levelwrap.deleteObject(settings.redShyguyObject.id, 
       settings.redShyguyObject.doc,
@@ -313,6 +312,16 @@ suite('Object (destructive)', function destructiveObjectSuite() {
         );
       }
     );
+  });
+});
+
+suite('Closing', function closingDbSuite() {
+
+  test('should close database', function closeDb(testDone) {
+    session.levelwrap.close(function done(error) {
+      assert.ok(!error, error);
+      testDone();
+    });
   });
 
 });

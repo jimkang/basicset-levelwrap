@@ -77,6 +77,10 @@ function createLevelWrap(leveldbFilePath) {
     });
   };
 
+  levelwrap.close = function close(done) {
+    this.db.close(done);
+  };
+
   return levelwrap;
 }
 
