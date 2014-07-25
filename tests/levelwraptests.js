@@ -1,7 +1,12 @@
 // These tests need to be run with the "--ui tdd" switch.
+// TODO: Make suites independent instead of all of them depending on the 
+// Instantiation suite.
 
 var assert = require('assert');
 var uid = require('./uid').uid;
+var fs = require('fs');
+
+var testDbLocation = 'test.db';
 
 /* Utils */
 
@@ -77,7 +82,7 @@ suite('Instantiation', function instantiationSuite() {
 
   test('should create the module', function instantiateModule() {
     session.levelwrap = require('../basicset-levelwrap').createLevelWrap(
-      'test.db'
+      testDbLocation
     );
     assert.ok(session.levelwrap, 'Could not create basicset-levelwrap');    
   });
@@ -320,10 +325,24 @@ suite('Closing', function closingDbSuite() {
   test('should close database', function closeDb(testDone) {
     session.levelwrap.close(function done(error) {
       assert.ok(!error, error);
+      deleteFolderRecursive(testDbLocation);
       testDone();
     });
   });
-
 });
 
-// TODO: Delete doc.
+// http://www.geedew.com/2012/10/24/remove-a-directory-that-is-not-empty-in-nodejs/
+function deleteFolderRecursive(path) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function(file, index){
+      var curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      }
+      else {
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+}
