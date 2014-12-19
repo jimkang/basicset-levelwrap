@@ -331,6 +331,14 @@ suite('Closing', function closingDbSuite() {
   });
 });
 
+suite('Internal db', function internalDbSuite() {
+  test('should be able to get the interal levelup db', function getDb() {
+    var db = session.levelwrap.getDb();
+    assert.ok(db);
+    assert.equal(typeof db, 'object');
+  });
+});
+
 // http://www.geedew.com/2012/10/24/remove-a-directory-that-is-not-empty-in-nodejs/
 function deleteFolderRecursive(path) {
   if (fs.existsSync(path)) {

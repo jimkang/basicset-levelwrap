@@ -79,6 +79,10 @@ function createLevelWrap(leveldbFilePath) {
     db.close(done);
   };
 
+  function getDb() {
+    return db;
+  }
+
   return {
     getObject: getObject,
     saveObject: saveObject,
@@ -86,7 +90,8 @@ function createLevelWrap(leveldbFilePath) {
     saveDoc: saveDoc,
     getDoc: getDoc,
     getDocObjectStream: getDocObjectStream,
-    close: close
+    close: close,
+    getDb: getDb
   };
 }
 
