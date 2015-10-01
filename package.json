@@ -7,8 +7,8 @@
     "test": "mocha --ui tdd -R spec tests/levelwraptests.js"
   },
   "repository": {
-    "type" : "git",
-    "url" : "http://github.com/jimkang/basicset-levelwrap.git"
+    "type": "git",
+    "url": "http://github.com/jimkang/basicset-levelwrap.git"
   },
   "keywords": [
     "basic",
@@ -18,6 +18,6 @@
   "author": "Jim Kang",
   "license": "MIT",
   "dependencies": {
-    "level": "~0.17.0-1"
+    "level": "^1.3.0"
   }
 }
