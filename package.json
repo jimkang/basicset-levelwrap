@@ -1,6 +1,6 @@
 {
   "name": "basicset-levelwrap",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A very basic leveldb wrapper for storing objects that belong to 'documents'.",
   "main": "basicset-levelwrap.js",
   "scripts": {
